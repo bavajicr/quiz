@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Human Eye and the Colourful World - Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f8ff;
+      margin: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .quiz-container {
+      max-width: 800px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ccc;
+    }
+    .question {
+      display: none;
+    }
+    .question.active {
+      display: block;
+    }
+    .option {
+      margin-bottom: 10px;
+      display: block;
+    }
+    button {
+      margin: 10px 5px;
+      padding: 10px 20px;
+      border: none;
+      background-color: #007BFF;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .feedback {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    .correct {
+      color: green;
+    }
+    .wrong {
+      color: red;
+    }
+    #nav-buttons {
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h1>Human Eye and the Colourful World - Quiz</h1>
+    <div id="quiz"></div>
+    <div id="nav-buttons">
+      <button id="prevBtn" onclick="showQuestion(currentQuestion - 1)">Previous</button>
+      <button id="nextBtn" onclick="showQuestion(currentQuestion + 1)">Next</button>
+      <button id="submitBtn" onclick="submitQuiz()" style="display:none;">Submit</button>
+    </div>
+    <div id="score" class="feedback"></div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        q: "1. What is the function of the iris in the human eye?",
+        options: ["A) To form images", "B) To control the size of the pupil", "C) To reflect light", "D) To focus light rays"],
+        answer: 1
+      },
+      {
+        q: "2. The human eye forms the image of an object at:",
+        options: ["A) Cornea", "B) Iris", "C) Retina", "D) Pupil"],
+        answer: 2
+      },
+      {
+        q: "3. Which part of the eye changes its shape to focus near and far objects?",
+        options: ["A) Cornea", "B) Retina", "C) Ciliary muscles", "D) Iris"],
+        answer: 2
+      },
+      {
+        q: "4. The least distance of distinct vision for a normal human eye is:",
+        options: ["A) 10 cm", "B) 25 cm", "C) 6 m", "D) Infinity"],
+        answer: 1
+      },
+      {
+        q: "5. Which defect of vision is corrected using a concave lens?",
+        options: ["A) Hypermetropia", "B) Presbyopia", "C) Myopia", "D) Astigmatism"],
+        answer: 2
+      },
+      {
+        q: "6. A person can see distant objects clearly but cannot see nearby objects. This defect is called:",
+        options: ["A) Myopia", "B) Hypermetropia", "C) Presbyopia", "D) Astigmatism"],
+        answer: 1
+      },
+      {
+        q: "7. What is the cause of presbyopia?",
+        options: ["A) Elongated eyeball", "B) Shortened eyeball", "C) Loss of flexibility of the eye lens", "D) Excess curvature of the cornea"],
+        answer: 2
+      },
+      {
+        q: "8. Which part of the eye controls the amount of light entering the eye?",
+        options: ["A) Retina", "B) Cornea", "C) Pupil", "D) Iris"],
+        answer: 3
+      },
+      {
+        q: "9. Which cells in the retina are sensitive to bright light and color?",
+        options: ["A) Rods", "B) Cones", "C) Both rods and cones", "D) None of the above"],
+        answer: 1
+      },
+      {
+        q: "10. What is the range of vision for a normal human eye?",
+        options: ["A) 25 cm to 2 m", "B) 25 cm to 6 m", "C) 25 cm to infinity", "D) 10 cm to 100 m"],
+        answer: 2
+      },
+      {
+        q: "11. The splitting of white light into its component colors is called:",
+        options: ["A) Reflection", "B) Refraction", "C) Dispersion", "D) Diffraction"],
+        answer: 2
+      },
+      {
+        q: "12. In a rainbow, light is:",
+        options: ["A) Reflected only", "B) Refracted only", "C) Dispersed only", "D) Refracted, dispersed and internally reflected"],
+        answer: 3
+      },
+      {
+        q: "13. Which phenomenon is responsible for the twinkling of stars?",
+        options: ["A) Reflection", "B) Refraction of light through atmospheric layers", "C) Scattering", "D) Diffraction"],
+        answer: 1
+      },
+      {
+        q: "14. The sky appears blue because:",
+        options: ["A) Blue light has shortest wavelength", "B) Blue light is least scattered", "C) Blue light is most scattered", "D) Red light is absorbed"],
+        answer: 2
+      },
+      {
+        q: "15. Danger signals are red in color because:",
+        options: ["A) Red is bright", "B) Red has longest wavelength and is least scattered", "C) Red is beautiful", "D) Red light travels faster"],
+        answer: 1
+      },
+      {
+        q: "16. Why does the sun appear reddish early in the morning?",
+        options: ["A) Due to reflection", "B) Due to refraction", "C) Due to scattering of shorter wavelengths", "D) Due to absorption of red light"],
+        answer: 2
+      },
+      {
+        q: "17. The clear sky appears dark to an astronaut because:",
+        options: ["A) There is no sunlight in space", "B) There is no air in space to scatter light", "C) Stars don’t emit light", "D) The sun is dim in space"],
+        answer: 1
+      },
+      {
+        q: "18. Which of the following explains the appearance of the sun before actual sunrise?",
+        options: ["A) Reflection of light", "B) Dispersion of light", "C) Atmospheric refraction", "D) Scattering of light"],
+        answer: 2
+      },
+      {
+        q: "19. Which color of white light deviates the most during dispersion?",
+        options: ["A) Red", "B) Green", "C) Blue", "D) Violet"],
+        answer: 3
+      },
+      {
+        q: "20. What is the cause of the blue color of the sky and red color of the sun at sunrise/sunset?",
+        options: ["A) Reflection", "B) Diffraction", "C) Scattering", "D) Absorption"],
+        answer: 2
+      },
+    ];
+
+    const quizContainer = document.getElementById("quiz");
+    let currentQuestion = 0;
+
+    function renderQuestions() {
+      questions.forEach((question, index) => {
+        const qDiv = document.createElement("div");
+        qDiv.classList.add("question");
+        if (index === 0) qDiv.classList.add("active");
+
+        const qTitle = document.createElement("h3");
+        qTitle.textContent = question.q;
+        qDiv.appendChild(qTitle);
+
+        question.options.forEach((opt, i) => {
+          const label = document.createElement("label");
+          label.classList.add("option");
+
+          const radio = document.createElement("input");
+          radio.type = "radio";
+          radio.name = "q" + index;
+          radio.value = i;
+
+          label.appendChild(radio);
+          label.append(" " + opt);
+          qDiv.appendChild(label);
+        });
+
+        quizContainer.appendChild(qDiv);
+      });
+    }
+
+    function showQuestion(index) {
+      const total = questions.length;
+      if (index < 0 || index >= total) return;
+
+      const allQuestions = document.querySelectorAll(".question");
+      allQuestions.forEach(q => q.classList.remove("active"));
+      allQuestions[index].classList.add("active");
+      currentQuestion = index;
+
+      document.getElementById("prevBtn").style.display = currentQuestion === 0 ? "none" : "inline-block";
+      document.getElementById("nextBtn").style.display = currentQuestion === total - 1 ? "none" : "inline-block";
+      document.getElementById("submitBtn").style.display = currentQuestion === total - 1 ? "inline-block" : "none";
+    }
+
+    function submitQuiz() {
+      let score = 0;
+      const allQuestions = document.querySelectorAll(".question");
+
+      questions.forEach((question, i) => {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        const qDiv = allQuestions[i];
+
+        let feedback = document.createElement("div");
+        feedback.classList.add("feedback");
+
+        if (selected) {
+          if (parseInt(selected.value) === question.answer) {
+            score++;
+            feedback.textContent = "Correct!";
+            feedback.classList.add("correct");
+          } else {
+            feedback.textContent = `Wrong. Correct: ${question.options[question.answer]}`;
+            feedback.classList.add("wrong");
+          }
+        } else {
+          feedback.textContent = `No answer selected. Correct: ${question.options[question.answer]}`;
+          feedback.classList.add("wrong");
+        }
+
+        const existing = qDiv.querySelector(".feedback");
+        if (existing) existing.remove();
+        qDiv.appendChild(feedback);
+      });
+
+      document.getElementById("score").textContent = `You scored ${score} out of ${questions.length}`;
+      showQuestion(0);
+    }
+
+    renderQuestions();
+    showQuestion(currentQuestion);
+  </script>
+</body>
+</html>
