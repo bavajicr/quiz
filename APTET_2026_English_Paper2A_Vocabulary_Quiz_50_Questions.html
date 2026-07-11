@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>APTET 2026 - English Paper 2A - Idioms and Phrases Quiz</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 20px;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+      border-bottom: 3px solid #667eea;
+      padding-bottom: 20px;
+    }
+    .header h1 {
+      color: #667eea;
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    .header p {
+      color: #666;
+      font-size: 14px;
+      margin: 5px 0;
+    }
+    .credit-line {
+      text-align: center;
+      padding: 12px;
+      background: #f8f9fa;
+      border-left: 4px solid #667eea;
+      font-weight: 600;
+      color: #333;
+      font-size: 12px;
+      margin-bottom: 20px;
+    }
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: #e0e0e0;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    .progress-text {
+      text-align: center;
+      margin-bottom: 10px;
+      color: #666;
+      font-weight: bold;
+    }
+    .quiz-container {
+      display: none;
+    }
+    .quiz-container.active {
+      display: block;
+    }
+    .question-card {
+      background: #f8f9fa;
+      padding: 25px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      border-left: 5px solid #667eea;
+    }
+    .question-title {
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+    .options-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .option-label {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      background: white;
+      border: 2px solid #e0e0e0;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .option-label:hover {
+      background: #e8eaf6;
+      border-color: #667eea;
+    }
+    .option-label input[type="radio"] {
+      margin-right: 12px;
+      cursor: pointer;
+      width: 18px;
+      height: 18px;
+    }
+    .option-text {
+      flex: 1;
+      color: #333;
+      font-size: 15px;
+    }
+    .option-label.correct {
+      background: #d4edda;
+      border-color: #28a745;
+    }
+    .option-label.wrong {
+      background: #f8d7da;
+      border-color: #dc3545;
+    }
+    .option-label.correct .option-text {
+      color: #155724;
+      font-weight: bold;
+    }
+    .option-label.wrong .option-text {
+      color: #721c24;
+      font-weight: bold;
+    }
+    .feedback-box {
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 6px;
+      font-weight: bold;
+      display: none;
+    }
+    .feedback-box.correct {
+      background: #d4edda;
+      color: #155724;
+      border-left: 4px solid #28a745;
+    }
+    .feedback-box.wrong {
+      background: #f8d7da;
+      color: #721c24;
+      border-left: 4px solid #dc3545;
+    }
+    .feedback-box.show {
+      display: block;
+    }
+    .navigation-buttons {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      margin-top: 30px;
+    }
+    .nav-btn {
+      flex: 1;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+    .nav-btn.prev {
+      background: #6c757d;
+      color: white;
+    }
+    .nav-btn.prev:hover:not(:disabled) {
+      background: #5a6268;
+      transform: translateX(-2px);
+    }
+    .nav-btn.next {
+      background: #667eea;
+      color: white;
+    }
+    .nav-btn.next:hover:not(:disabled) {
+      background: #5568d3;
+      transform: translateX(2px);
+    }
+    .nav-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .submit-btn {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: all 0.3s ease;
+    }
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+    }
+    .results-container {
+      display: none;
+      text-align: center;
+    }
+    .results-container.active {
+      display: block;
+    }
+    .score-display {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 40px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+    }
+    .score-number {
+      font-size: 48px;
+      font-weight: bold;
+      margin: 20px 0;
+    }
+    .score-text {
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+    .performance-message {
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.2);
+    }
+    .results-summary {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+    .results-summary h3 {
+      color: #667eea;
+      margin-bottom: 15px;
+    }
+    .result-item {
+      padding: 15px;
+      margin-bottom: 10px;
+      border-left: 4px solid #ddd;
+      background: white;
+      border-radius: 4px;
+    }
+    .result-item.correct {
+      border-left-color: #28a745;
+      background: #f0f9f6;
+    }
+    .result-item.wrong {
+      border-left-color: #dc3545;
+      background: #fef5f5;
+    }
+    .result-question {
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 8px;
+    }
+    .result-answer {
+      font-size: 14px;
+      color: #666;
+      margin: 5px 0;
+    }
+    .correct-answer {
+      color: #155724;
+      font-weight: bold;
+    }
+    .action-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 30px;
+    }
+    .btn {
+      padding: 12px 30px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+    .btn-download {
+      background: #007bff;
+      color: white;
+    }
+    .btn-download:hover {
+      background: #0056b3;
+      transform: translateY(-2px);
+    }
+    .btn-retake {
+      background: #667eea;
+      color: white;
+    }
+    .btn-retake:hover {
+      background: #5568d3;
+      transform: translateY(-2px);
+    }
+    .unanswered-warning {
+      background: #fff3cd;
+      color: #856404;
+      padding: 12px;
+      border-radius: 6px;
+      margin-bottom: 15px;
+      border-left: 4px solid #ffc107;
+    }
+    .question-counter {
+      background: #667eea;
+      color: white;
+      padding: 8px 15px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-bottom: 15px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px;
+      }
+      .header h1 {
+        font-size: 22px;
+      }
+      .navigation-buttons {
+        flex-direction: column;
+      }
+      .score-number {
+        font-size: 36px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1>APTET 2026 - English Paper 2A</h1>
+      <p><strong>Interactive Quiz: Vocabulary - Idioms and Phrases</strong></p>
+      <p style="margin-top: 15px; font-size: 13px; color: #666;">Identification of Meanings (50 Questions)</p>
+    </div>
+
+    <div class="credit-line">
+      <p>✏️ C. RASOOL BAVAJI, S.A.(P.S.), ZPHS, MADANAPALLE, ANNMAYYA DISTRICT</p>
+      <p>📝 Reviewed by P. NAZEEMA BEE, M.A., B.Ed.</p>
+    </div>
+
+    <!-- Quiz Container -->
+    <div id="quizMode" class="quiz-mode">
+      <div class="progress-text"><span id="currentQuestion">1</span> / <span id="totalQuestions">50</span></div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+
+      <div id="quizContainer" class="quiz-container active">
+        <div class="question-counter">Question <span id="qCounter">1</span> of 50</div>
+        <div class="question-card">
+          <div class="question-title" id="questionTitle"></div>
+          <div class="options-container" id="optionsContainer"></div>
+          <div class="feedback-box" id="feedbackBox"></div>
+        </div>
+      </div>
+
+      <div class="navigation-buttons">
+        <button class="nav-btn prev" id="prevBtn" onclick="previousQuestion()">← Previous</button>
+        <button class="nav-btn next" id="nextBtn" onclick="nextQuestion()">Next →</button>
+        <button class="submit-btn" id="submitBtn" style="display:none;" onclick="submitQuiz()">Submit Quiz</button>
+      </div>
+    </div>
+
+    <!-- Results Container -->
+    <div id="resultsMode" class="results-container">
+      <div class="score-display">
+        <div class="score-text">Quiz Completed!</div>
+        <div class="score-number" id="scorePercentage">0%</div>
+        <div style="font-size: 18px;">You scored <span id="scoreNumber">0</span> out of 50</div>
+        <div class="performance-message" id="performanceMessage"></div>
+      </div>
+
+      <div class="results-summary">
+        <h3>Answer Review</h3>
+        <div id="resultsDetails"></div>
+      </div>
+
+      <div class="action-buttons">
+        <button class="btn btn-download" onclick="downloadPDF()">📥 Download Results & Answer Key (PDF)</button>
+        <button class="btn btn-retake" onclick="retakeQuiz()">🔄 Retake Quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script>
+    // 50 Questions on Idioms and Phrases - Mixed Format
+    const questions = [
+      {
+        q: "What does the idiom 'A Stitch in Time Saves Nine' mean?",
+        type: "meaning",
+        options: ["A) Fixing a small problem before it becomes bigger", "B) Sewing is an important skill", "C) Always carry a needle and thread", "D) Time is money"],
+        answer: 0
+      },
+      {
+        q: "Which idiom means 'to avoid talking about the main point'?",
+        type: "identification",
+        options: ["A) Hit the nail on the head", "B) Beat around the bush", "C) Break the ice", "D) Catch up"],
+        answer: 1
+      },
+      {
+        q: "Choose the correct meaning of 'Better Late Than Never':",
+        type: "meaning",
+        options: ["A) Always be on time", "B) It's better to do something late than not do it at all", "C) Never be late for work", "D) Late arrivals are acceptable"],
+        answer: 1
+      },
+      {
+        q: "What does 'Break the Ice' mean in a social context?",
+        type: "meaning",
+        options: ["A) To break actual ice", "B) To end a conversation", "C) To initiate conversation in a difficult situation", "D) To be cold and unfriendly"],
+        answer: 2
+      },
+      {
+        q: "Fill in the blank: 'We need to _____ on this project.' The idiom means to start something or initiate.",
+        type: "fill",
+        options: ["A) Get the ball rolling", "B) Hit the nail", "C) Break the silence", "D) Cut the grass"],
+        answer: 0
+      },
+      {
+        q: "What does 'In the Nick of Time' mean?",
+        type: "meaning",
+        options: ["A) At the beginning of time", "B) At the last possible moment", "C) In the middle of the day", "D) Just before sunrise"],
+        answer: 1
+      },
+      {
+        q: "Which of these means 'to join a popular trend'?",
+        type: "identification",
+        options: ["A) Jump on the bandwagon", "B) Jump in the water", "C) Jump the line", "D) Jump to conclusions"],
+        answer: 0
+      },
+      {
+        q: "What does 'Keep Your Chin Up' mean?",
+        type: "meaning",
+        options: ["A) Stand straight", "B) Stay positive and hopeful", "C) Trim your beard", "D) Look upward"],
+        answer: 1
+      },
+      {
+        q: "Identify the correct meaning of 'Once in a Blue Moon':",
+        type: "meaning",
+        options: ["A) When the moon is blue", "B) Very rarely or almost never", "C) Once every month", "D) When wearing blue clothes"],
+        answer: 1
+      },
+      {
+        q: "What does the phrase 'A Piece of Cake' indicate?",
+        type: "meaning",
+        options: ["A) You should eat cake", "B) Something is very easy to do", "C) Baking is difficult", "D) A literal slice of cake"],
+        answer: 1
+      },
+      {
+        q: "Which idiom means 'in a desperate or difficult situation'?",
+        type: "identification",
+        options: ["A) On the ball", "B) Back against the wall", "C) Walking on eggshells", "D) Under the weather"],
+        answer: 1
+      },
+      {
+        q: "What does 'Back to Square One' mean?",
+        type: "meaning",
+        options: ["A) Going back to your hometown", "B) Returning to the beginning or starting over", "C) Going behind someone", "D) Moving backward"],
+        answer: 1
+      },
+      {
+        q: "Choose the idiom that means 'to make a great effort':",
+        type: "identification",
+        options: ["A) Bend over backwards", "B) Stand up straight", "C) Lie down", "D) Sit comfortably"],
+        answer: 0
+      },
+      {
+        q: "What does 'Blood is Thicker Than Water' imply?",
+        type: "meaning",
+        options: ["A) Blood is physically thicker", "B) Family bonds are stronger than other relationships", "C) Water dilutes blood", "D) Biology is important"],
+        answer: 1
+      },
+      {
+        q: "Which phrase means 'to release stress or anger'?",
+        type: "identification",
+        options: ["A) Hold your breath", "B) Blow off steam", "C) Keep it inside", "D) Stay calm"],
+        answer: 1
+      },
+      {
+        q: "What does 'Break a Leg' mean?",
+        type: "meaning",
+        options: ["A) Cause an injury", "B) Good luck (especially before performances)", "C) Actually break your leg", "D) Stop running"],
+        answer: 1
+      },
+      {
+        q: "Complete the meaning: 'Bring Home the Bacon' means:",
+        type: "meaning",
+        options: ["A) Cook breakfast", "B) Buy bacon from the shop", "C) Earn money for the family or succeed", "D) Return home with food"],
+        answer: 2
+      },
+      {
+        q: "Which idiom describes working very hard, especially late into the night?",
+        type: "identification",
+        options: ["A) Burn the candle at both ends", "B) Burn the midnight oil", "C) Burn your bridges", "D) Burn out"],
+        answer: 1
+      },
+      {
+        q: "What does 'Burst Your Bubble' mean?",
+        type: "meaning",
+        options: ["A) Pop balloons", "B) Make something float", "C) Destroy hopes or deliver disappointing news", "D) Inflate bubbles"],
+        answer: 2
+      },
+      {
+        q: "Identify the idiom meaning 'to stop working for the day':",
+        type: "identification",
+        options: ["A) Call it a night", "B) Call it a day", "C) Call it quits (same meaning but different)", "D) Call it even"],
+        answer: 1
+      },
+      {
+        q: "What does 'Cost an Arm and a Leg' mean?",
+        type: "meaning",
+        options: ["A) Requiring body parts", "B) Very expensive", "C) Costing physical effort", "D) Reasonably priced"],
+        answer: 1
+      },
+      {
+        q: "Complete: 'Don't _____ over spilled milk' - this means to avoid futile regret.",
+        type: "fill",
+        options: ["A) Cry", "B) Laugh", "C) Scream", "D) Shout"],
+        answer: 0
+      },
+      {
+        q: "What does 'Cut to the Chase' mean?",
+        type: "meaning",
+        options: ["A) Run quickly", "B) Cut rope into pieces", "C) Get to the main point; skip unnecessary details", "D) Chase someone"],
+        answer: 2
+      },
+      {
+        q: "Which phrase means 'to start something enthusiastically'?",
+        type: "identification",
+        options: ["A) Surface the problem", "B) Dive into", "C) Float on", "D) Sink down"],
+        answer: 1
+      },
+      {
+        q: "What does 'Down in the Dumps' indicate?",
+        type: "meaning",
+        options: ["A) In a garbage area", "B) Feeling sad or depressed", "C) At a discount store", "D) Underground location"],
+        answer: 1
+      },
+      {
+        q: "Choose the meaning of 'Down to Earth':",
+        type: "meaning",
+        options: ["A) Lying on the ground", "B) Practical, realistic, and humble", "C) Far away from sky", "D) Depressed"],
+        answer: 1
+      },
+      {
+        q: "What does the idiom 'Draw the Line' mean?",
+        type: "meaning",
+        options: ["A) Use a ruler to draw", "B) Set a limit or boundary", "C) Separate items", "D) Create artwork"],
+        answer: 1
+      },
+      {
+        q: "Which phrase is used to say 'a boring time'?",
+        type: "identification",
+        options: ["A) A dull moment", "B) A dark night", "C) A sad day", "D) A quiet morning"],
+        answer: 0
+      },
+      {
+        q: "What does 'Earn Your Stripes' mean?",
+        type: "meaning",
+        options: ["A) Get military rank", "B) Prove your ability and gain respect", "C) Wear striped clothes", "D) Play sports"],
+        answer: 1
+      },
+      {
+        q: "Identify the idiom: 'That exam was _____ - I finished in minutes.'",
+        type: "fill",
+        options: ["A) Hard as stone", "B) Easy as pie", "C) Difficult and long", "D) Challenging"],
+        answer: 1
+      },
+      {
+        q: "What does 'Face the Music' mean?",
+        type: "meaning",
+        options: ["A) Listen to songs", "B) Accept consequences of actions; confront difficulty", "C) Play musical instruments", "D) Attend a concert"],
+        answer: 1
+      },
+      {
+        q: "Which phrase means 'to fall back or not keep up'?",
+        type: "identification",
+        options: ["A) Fall behind", "B) Fall forward", "C) Fall aside", "D) Fall through"],
+        answer: 0
+      },
+      {
+        q: "What does 'Fall Through' mean?",
+        type: "meaning",
+        options: ["A) Fall down stairs", "B) Fail or not be completed as planned", "C) Fall through a hole", "D) Pass through something"],
+        answer: 1
+      },
+      {
+        q: "Identify the correct meaning of 'Feel Blue':",
+        type: "meaning",
+        options: ["A) See the color blue", "B) Feel cold", "C) Feel sad or depressed", "D) Eat blueberries"],
+        answer: 2
+      },
+      {
+        q: "Which idiom means 'rare or not often occurring'?",
+        type: "identification",
+        options: ["A) Far and near", "B) Few and far between", "C) Near and dear", "D) Wide and broad"],
+        answer: 1
+      },
+      {
+        q: "What does 'Fish Out of Water' describe?",
+        type: "meaning",
+        options: ["A) A literal fish in water", "B) A person uncomfortable in a new environment", "C) Fishing in the ocean", "D) Swimming skills"],
+        answer: 1
+      },
+      {
+        q: "Identify: 'Despite his age, he is _____ - very healthy and strong.'",
+        type: "fill",
+        options: ["A) Fit as a fiddle", "B) Fit as a feather", "C) Fit as a bird", "D) Fit as a flower"],
+        answer: 0
+      },
+      {
+        q: "What does 'Fly by Night' indicate?",
+        type: "meaning",
+        options: ["A) A night flight", "B) Something unreliable or temporary", "C) Flying at night is common", "D) A type of bird"],
+        answer: 1
+      },
+      {
+        q: "Which phrase means 'to make an extra effort'?",
+        type: "identification",
+        options: ["A) Go the extra mile", "B) Go slowly", "C) Go backwards", "D) Go home"],
+        answer: 0
+      },
+      {
+        q: "What does 'Go with the Flow' mean?",
+        type: "meaning",
+        options: ["A) Swim in water", "B) Be flexible and adapt to circumstances", "C) Follow traffic", "D) Go downstream only"],
+        answer: 1
+      },
+      {
+        q: "Complete: 'He is _____ - very reliable and trustworthy.'",
+        type: "fill",
+        options: ["A) Good as gold", "B) Good as silver", "C) Good as bronze", "D) Good as iron"],
+        answer: 0
+      },
+      {
+        q: "What does 'Grass is Always Greener' suggest?",
+        type: "meaning",
+        options: ["A) Grass needs watering", "B) People think other things are better than what they have", "C) Green is the best color", "D) Lawns need mowing"],
+        answer: 1
+      },
+      {
+        q: "Which idiom encourages persistence?",
+        type: "identification",
+        options: ["A) Give up", "B) Go home", "C) Hang in there", "D) Leave now"],
+        answer: 2
+      },
+      {
+        q: "What does 'Head and Shoulders Above' mean?",
+        type: "meaning",
+        options: ["A) Taller than everyone", "B) Significantly better than others; superior", "C) Wearing a hat", "D) Good posture"],
+        answer: 1
+      },
+      {
+        q: "Identify the phrase: 'He is _____ - completely in love.'",
+        type: "fill",
+        options: ["A) Head to foot", "B) Head over heels", "C) Head in clouds", "D) Head first"],
+        answer: 1
+      },
+      {
+        q: "What does 'Heart and Soul' express?",
+        type: "meaning",
+        options: ["A) Medical terminology", "B) Complete devotion and emotion", "C) Romantic feelings only", "D) Physical health"],
+        answer: 1
+      },
+      {
+        q: "Which phrase describes a feeling of sadness?",
+        type: "identification",
+        options: ["A) Light heart", "B) Happy heart", "C) Heavy heart", "D) Brave heart"],
+        answer: 2
+      },
+      {
+        q: "What does 'Hold Your Horses' mean?",
+        type: "meaning",
+        options: ["A) Keep horses under control", "B) Wait; be patient; slow down", "C) Ride horses", "D) Stable horses"],
+        answer: 1
+      },
+      {
+        q: "Complete: 'He _____ when he saw the accident - he didn't say anything.'",
+        type: "fill",
+        options: ["A) Held his breath", "B) Held his tongue", "C) Held his hands", "D) Held his feet"],
+        answer: 1
+      },
+      {
+        q: "What does 'It Goes Without Saying' mean?",
+        type: "meaning",
+        options: ["A) Don't speak about it", "B) It's obvious; it's understood", "C) Walking is implied", "D) Silent treatment"],
+        answer: 1
+      },
+      {
+        q: "Which idiom means 'to accidentally forget something'?",
+        type: "identification",
+        options: ["A) It slipped my mind", "B) It stayed on my mind", "C) It fixed my mind", "D) It changed my mind"],
+        answer: 0
+      }
+    ];
+
+    // Shuffle functions
+    function shuffleArray(array) {
+      const shuffled = [...array];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      return shuffled;
+    }
+
+    function shuffleOptions(question) {
+      const originalOptions = [...question.options];
+      const originalAnswer = question.options[question.answer];
+      const shuffledOptions = shuffleArray(originalOptions);
+      const newAnswer = shuffledOptions.indexOf(originalAnswer);
+      return { options: shuffledOptions, answer: newAnswer };
+    }
+
+    // Initialize quiz
+    let shuffledQuestions = shuffleArray(questions).map(q => ({
+      ...q,
+      ...shuffleOptions(q)
+    }));
+    let currentQuestion = 0;
+    let answers = [];
+
+    function displayQuestion() {
+      const question = shuffledQuestions[currentQuestion];
+      document.getElementById('qCounter').textContent = currentQuestion + 1;
+      document.getElementById('currentQuestion').textContent = currentQuestion + 1;
+      document.getElementById('totalQuestions').textContent = shuffledQuestions.length;
+      
+      const progress = ((currentQuestion + 1) / shuffledQuestions.length) * 100;
+      document.getElementById('progressFill').style.width = progress + '%';
+
+      document.getElementById('questionTitle').textContent = question.q;
+      
+      const optionsContainer = document.getElementById('optionsContainer');
+      optionsContainer.innerHTML = '';
+      const feedbackBox = document.getElementById('feedbackBox');
+      feedbackBox.classList.remove('show', 'correct', 'wrong');
+
+      question.options.forEach((option, index) => {
+        const label = document.createElement('label');
+        label.className = 'option-label';
+
+        const input = document.createElement('input');
+        input.type = 'radio';
+        input.name = 'option';
+        input.value = index;
+        input.checked = answers[currentQuestion] !== undefined && answers[currentQuestion] === index;
+
+        const span = document.createElement('span');
+        span.className = 'option-text';
+        span.textContent = option;
+
+        label.appendChild(input);
+        label.appendChild(span);
+        optionsContainer.appendChild(label);
+
+        input.addEventListener('change', function() {
+          answers[currentQuestion] = index;
+          showFeedback(index, question.answer, question.options);
+        });
+      });
+
+      // Restore previous feedback if exists
+      if (answers[currentQuestion] !== undefined) {
+        const selectedInput = document.querySelector(`input[value="${answers[currentQuestion]}"]`);
+        if (selectedInput) {
+          showFeedback(answers[currentQuestion], question.answer, question.options);
+        }
+      }
+
+      updateNavigationButtons();
+    }
+
+    function showFeedback(selected, correct, options) {
+      const feedbackBox = document.getElementById('feedbackBox');
+      const labels = document.querySelectorAll('.option-label');
+      
+      labels.forEach(label => {
+        label.classList.remove('correct', 'wrong');
+      });
+
+      labels[correct].classList.add('correct');
+      if (selected !== correct) {
+        labels[selected].classList.add('wrong');
+      }
+
+      feedbackBox.classList.add('show');
+      if (selected === correct) {
+        feedbackBox.classList.add('correct');
+        feedbackBox.classList.remove('wrong');
+        feedbackBox.textContent = '✓ Correct!';
+      } else {
+        feedbackBox.classList.add('wrong');
+        feedbackBox.classList.remove('correct');
+        feedbackBox.textContent = `✗ Wrong! Correct answer: ${options[correct]}`;
+      }
+    }
+
+    function nextQuestion() {
+      if (currentQuestion < shuffledQuestions.length - 1) {
+        currentQuestion++;
+        displayQuestion();
+        window.scrollTo(0, 0);
+      }
+    }
+
+    function previousQuestion() {
+      if (currentQuestion > 0) {
+        currentQuestion--;
+        displayQuestion();
+        window.scrollTo(0, 0);
+      }
+    }
+
+    function updateNavigationButtons() {
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const submitBtn = document.getElementById('submitBtn');
+
+      prevBtn.disabled = currentQuestion === 0;
+      if (currentQuestion === shuffledQuestions.length - 1) {
+        nextBtn.style.display = 'none';
+        submitBtn.style.display = 'block';
+      } else {
+        nextBtn.style.display = 'block';
+        submitBtn.style.display = 'none';
+      }
+    }
+
+    function submitQuiz() {
+      let score = 0;
+      let resultsHTML = '';
+
+      shuffledQuestions.forEach((question, index) => {
+        const isCorrect = answers[index] === question.answer;
+        if (isCorrect) score++;
+
+        const resultClass = isCorrect ? 'correct' : 'wrong';
+        const icon = isCorrect ? '✓' : '✗';
+        const statusText = isCorrect ? 'Correct' : 'Wrong';
+
+        resultsHTML += `
+          <div class="result-item ${resultClass}">
+            <div class="result-question">${icon} Q${index + 1}: ${question.q}</div>
+            <div class="result-answer">Your answer: ${answers[index] !== undefined ? question.options[answers[index]] : '<span style="color: #dc3545;">No answer selected</span>'}</div>
+            ${!isCorrect ? `<div class="result-answer"><span class="correct-answer">✓ Correct answer: ${question.options[question.answer]}</span></div>` : ''}
+          </div>
+        `;
+      });
+
+      const percentage = Math.round((score / shuffledQuestions.length) * 100);
+      const performanceMessage = getPerformanceMessage(percentage);
+
+      document.getElementById('scoreNumber').textContent = score;
+      document.getElementById('scorePercentage').textContent = percentage + '%';
+      document.getElementById('performanceMessage').textContent = performanceMessage;
+      document.getElementById('resultsDetails').innerHTML = resultsHTML;
+
+      document.getElementById('quizMode').style.display = 'none';
+      document.getElementById('resultsMode').classList.add('active');
+
+      window.scrollTo(0, 0);
+    }
+
+    function getPerformanceMessage(percentage) {
+      if (percentage === 100) return '🏆 Perfect Score! Outstanding!';
+      if (percentage >= 90) return '🥇 Excellent! Outstanding performance!';
+      if (percentage >= 80) return '🥈 Very Good! Great effort!';
+      if (percentage >= 70) return '🥉 Good! Keep practicing!';
+      if (percentage >= 60) return '👍 Satisfactory! More practice needed!';
+      if (percentage >= 50) return '📚 Need more preparation!';
+      return '💪 Keep studying and try again!';
+    }
+
+    function retakeQuiz() {
+      shuffledQuestions = shuffleArray(questions).map(q => ({
+        ...q,
+        ...shuffleOptions(q)
+      }));
+      currentQuestion = 0;
+      answers = [];
+
+      document.getElementById('resultsMode').classList.remove('active');
+      document.getElementById('quizMode').style.display = 'block';
+      
+      displayQuestion();
+      window.scrollTo(0, 0);
+    }
+
+    function downloadPDF() {
+      const element = document.createElement('div');
+      element.innerHTML = `
+        <div style="font-family: Arial, sans-serif; padding: 40px; background: white;">
+          <div style="text-align: center; border-bottom: 3px solid #667eea; padding-bottom: 20px; margin-bottom: 30px;">
+            <h1 style="color: #667eea; font-size: 28px; margin: 10px 0;">APTET 2026 - Quiz Results</h1>
+            <p style="color: #666; margin: 5px 0;"><strong>Vocabulary: Idioms and Phrases</strong></p>
+          </div>
+
+          <div style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; border-radius: 10px; margin-bottom: 30px;">
+            <div style="font-size: 18px; margin-bottom: 15px;">Quiz Completed!</div>
+            <div style="font-size: 48px; font-weight: bold; margin: 20px 0;">${document.getElementById('scorePercentage').textContent}</div>
+            <div style="font-size: 18px;">Score: ${document.getElementById('scoreNumber').textContent} out of 50</div>
+            <div style="font-size: 16px; margin-top: 20px; background: rgba(255,255,255,0.2); padding: 15px; border-radius: 6px;">${document.getElementById('performanceMessage').textContent}</div>
+          </div>
+
+          <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+            <h3 style="color: #667eea; margin-bottom: 20px;">Answer Review</h3>
+            ${document.getElementById('resultsDetails').innerHTML}
+          </div>
+
+          <div style="margin-top: 50px; padding-top: 20px; border-top: 3px solid #667eea; text-align: center;">
+            <p style="color: #333; font-weight: 600; margin: 5px 0;">✏️ C. RASOOL BAVAJI, S.A.(P.S.), ZPHS, MADANAPALLE, ANNMAYYA DISTRICT</p>
+            <p style="color: #333; font-weight: 600; margin: 5px 0;">📝 Reviewed by P. NAZEEMA BEE, M.A., B.Ed.</p>
+            <p style="color: #999; font-size: 12px; margin-top: 15px;">© 2026 APTET Study Material | All Rights Reserved</p>
+          </div>
+        </div>
+      `;
+
+      const opt = {
+        margin: 10,
+        filename: 'APTET_2026_Quiz_Results.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
+      };
+
+      html2pdf().set(opt).from(element).save();
+    }
+
+    // Initialize
+    displayQuestion();
+  </script>
+</body>
+</html>
